@@ -1,0 +1,74 @@
+#include <stdio.h>
+
+// verifica posição e adjacências
+int posicao_segura(int mapa[10][10], int linha, int coluna) {
+    // Verifica se está dentro do tabuleiro
+    if(linha < 0 || linha > 9 || coluna < 0 || coluna > 9) return 0;
+    
+    // Verifica todas as células ao redor (incluindo diagonais)
+    for(int i = -1; i <= 1; i++) {
+        for(int j = -1; j <= 1; j++) {
+            int vizinho_linha = linha + i;
+            int vizinho_coluna = coluna + j;
+            
+            // Se encontrar algum navio próximo, posição inválida
+            if(vizinho_linha >= 0 && vizinho_linha < 10 &&
+               vizinho_coluna >= 0 && vizinho_coluna < 10) {
+                if(mapa[vizinho_linha][vizinho_coluna] != 0) return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+// Função para posicionar navios com validação
+int posicionar_navio(int mapa[10][10], int linha, int coluna, int direcao_linha, int direcao_coluna, char* tipo) {
+    // Verifica cada posição do navio
+    for(int passo = 0; passo < 3; passo++) {
+        int l = linha + (passo * direcao_linha);
+        int c = coluna + (passo * direcao_coluna);
+        
+        if(!posicao_segura(mapa, l, c)) {
+            printf("\nERRO: %s em (%d,%d) colide ou sai do mapa!\n", tipo, linha, coluna);
+            return 0;
+        }
+    }
+    
+    // Posiciona o navio se todas as posições forem válidas
+    for(int passo = 0; passo < 3; passo++) {
+        int l = linha + (passo * direcao_linha);
+        int c = coluna + (passo * direcao_coluna);
+        mapa[l][c] = 3;
+    }
+    return 1;
+}
+
+int main() {
+    int mapa[10][10] = {0};  // Inicializa tudo com 0
+    
+    // ===== POSICIONAMENTO DOS NAVIOS =====
+    // Navio Horizontal 
+    if(!posicionar_navio(mapa, 2, 3, 0, 1, "Navio Horizontal")) return 1;
+    
+    // Navio Vertical 
+    if(!posicionar_navio(mapa, 5, 4, 1, 0, "Navio Vertical")) return 1;
+    
+    // Navio Diagonal 1 
+    if(!posicionar_navio(mapa, 1, 1, 1, 1, "Navio Diagonal 1")) return 1;
+    
+    // Navio Diagonal 2 
+    if(!posicionar_navio(mapa, 3, 7, 1, -1, "Navio Diagonal 2")) return 1;
+    
+    // ===== EXIBE O TABULEIRO =====
+    printf("\n\tTABULEIRO DA BATALHA NAVAL\n");
+    printf("   0 1 2 3 4 5 6 7 8 9\n");  
+    for(int i = 0; i < 10; i++) {
+        printf("%d ", i);  
+        for(int j = 0; j < 10; j++) {
+            printf(" %d", mapa[i][j]);
+        }
+        printf("\n");
+    }
+    
+    return 0;
+}
