@@ -1,0 +1,63 @@
+
+#include <stdio.h>
+
+int main() {
+    int mapa[10][10];  // Nosso tabuleiro 10x10
+    int i, j;          // Variáveis pra loops
+    
+    // Preenche tudo com água (0)
+    for(i = 0; i < 10; i++) {
+        for(j = 0; j < 10; j++) {
+            mapa[i][j] = 0;
+        }
+    }
+
+    // Navio horizontal (linha 2, começa na coluna 3)
+    int linha_barco1 = 2;
+    int coluna_barco1 = 3;
+    
+    // Verifica se cabe na horizontal
+    if(coluna_barco1 > 7) {
+        printf("Eita! Barco horizontal não cabe aqui :O\n");
+        return 1;
+    }
+    
+    // Coloca o barco (3 posições)
+    mapa[linha_barco1][coluna_barco1] = 3;
+    mapa[linha_barco1][coluna_barco1 + 1] = 3;
+    mapa[linha_barco1][coluna_barco1 + 2] = 3;
+
+    // Navio vertical 
+    int linha_barco2 = 5;
+    int coluna_barco2 = 4;
+    
+    // Verifica se cabe na vertical
+    if(linha_barco2 > 7) {
+        printf("Eita! Barco vertical não cabe aqui :O\n");
+        return 1;
+    }
+    
+    // Verifica se bate no barco horizontal 
+    if(coluna_barco2 == 4) {  // Só verifica se estiver na mesma coluna
+        if(linha_barco2 >= 2 && linha_barco2 <= 4) {
+            printf("Ah não! Bateu nos barcos :/\n");
+            return 1;
+        }
+    }
+    
+    // Coloca o barco (3 posições)
+    mapa[linha_barco2][coluna_barco2] = 3;
+    mapa[linha_barco2 + 1][coluna_barco2] = 3;
+    mapa[linha_barco2 + 2][coluna_barco2] = 3;
+
+    // Mostra o mapa
+    printf("\nMapa da Batalha Naval:\n");
+    for(i = 0; i < 10; i++) {
+        for(j = 0; j < 10; j++) {
+            printf("%d ", mapa[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
